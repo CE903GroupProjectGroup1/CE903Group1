@@ -9,20 +9,8 @@ import os
 
 
 file1="./cluster_monitor_data_10sec.csv"
-#file2="./cluster_monitor_data.csv"
-#file2_old="./cluster_monitor_data_old.csv"
-#file_tmp="./cluster_monitor_data_tmp.csv"
 
-
-logger = logging.getLogger(file1)
-#hdlr = logging.FileHandler('./cluster_monitor_data_10sec.csv')
-hdlr = logging.FileHandler(file1)
-#formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-formatter = logging.Formatter('%(message)s')
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr) 
-logger.setLevel(logging.INFO)
-
+data_dic={}
 
 
 UDP_PORT = 5005
@@ -30,9 +18,34 @@ sock = socket.socket(socket.AF_INET, # Internet
                       socket.SOCK_DGRAM) # UDP
 sock.bind(('', UDP_PORT))
 
-while True:
-  data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-  print "received message:", data
-  logger.info(data) 
+
+def write_report(d, filename):
+   if os.path.exists(file1):
+      os.remove(file1)
+   with open(filename, "a") as out_file:
+         for k,v in d.items():
+            line = '{}'.format(v)
+            out_file.write(line+'\n')
+           
+
+try:
+  
+   while True:
+     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+     print "received message:", data
+     y = data.strip().split(",")
+     nodename=y[0]
+     data_dic[nodename]=data
+     print "the following is the content of data_dic"
+     print data_dic.values()
+     write_report(data_dic,file1)
+      
+
+finally:
+   sock.close()
+
+
+
+  
 
 

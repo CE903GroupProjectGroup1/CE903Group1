@@ -1,5 +1,4 @@
 import sys, socket, select, time
-#from nilgl import *
 from math import *
 
 
@@ -20,8 +19,7 @@ file_tmp="./cluster_monitor_data_tmp.csv"
 
 ## remove any empty lines in tmp file
 def remove_empty_lines(filename):
-    """Overwrite the file, removing empty lines and lines that contain only whitespace."""
-    with open(filename) as in_file, open(filename, 'r+') as out_file:
+   with open(filename) as in_file, open(filename, 'r+') as out_file:
         out_file.writelines(line for line in in_file if line.strip())
         out_file.truncate()
 
@@ -34,7 +32,7 @@ def line_prepender(filename):
         f.seek(0, 0)
         f.write(line.rstrip('\r\n') + '\n' + content)
 
-### Check whether file contains a word(pattern)        
+### Check whether file contains nodename(pattern)        
 def check(file,pattern):
     print "opening file :", file
     f2=open(file,"r")
@@ -75,28 +73,6 @@ def update_csv(f1,f2):
  result.close()
  f_1.close()
 
-'''
-logger = logging.getLogger(file1)
-#hdlr = logging.FileHandler('./cluster_monitor_data_10sec.csv')
-hdlr = logging.FileHandler(file1)
-#formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-formatter = logging.Formatter('%(message)s')
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr) 
-logger.setLevel(logging.INFO)
-
-
-
-UDP_PORT = 5005
-sock = socket.socket(socket.AF_INET, # Internet
-                      socket.SOCK_DGRAM) # UDP
-sock.bind(('', UDP_PORT))
-
-while True:
-  data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-  print "received message:", data
-  logger.info(data) 
-'''
 
 
 while True:
@@ -123,18 +99,17 @@ while True:
 
  remove_empty_lines(file_tmp)
 
- #os.remove(file2_old)
- #os.remove(file2)
+
  import pandas as pd
  df = pd.read_csv(file_tmp)
  df = df.sort(columns='Node')
  df.to_csv(file2, index=False)
  
- #shutil.copy2(file2_old,file2)
+
  from jsonify import convert
- #convert.jsonify('cluster_monitor_data.csv')
+
  convert.jsonify(file2)
- time.sleep(60)
+ time.sleep(30)
 
 
 
