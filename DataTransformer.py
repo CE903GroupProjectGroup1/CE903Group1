@@ -6,6 +6,8 @@ import socket
 import logging
 import shutil
 import os
+import pandas as pd
+from jsonify import convert
 
 
 file1="./cluster_monitor_data_10sec.csv"
@@ -100,16 +102,15 @@ while True:
  remove_empty_lines(file_tmp)
 
 
- import pandas as pd
+ 
  df = pd.read_csv(file_tmp)
  df = df.sort(columns='Node')
  df.to_csv(file2, index=False)
  
 
- from jsonify import convert
-
+ #Transform csv file to a Json file
  convert.jsonify(file2)
- time.sleep(30)
+ time.sleep(10)
 
 
 

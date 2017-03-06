@@ -12,7 +12,7 @@ file1="./cluster_monitor_data_10sec.csv"
 data_dic={}
 
 
-UDP_PORT = 5005
+UDP_PORT = 50065
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('', UDP_PORT))
 
