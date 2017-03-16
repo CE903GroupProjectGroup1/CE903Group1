@@ -55,7 +55,6 @@ def check(file,pattern):
 def update_csv(f1,f2):
 
  f_1=open(f1,"r")
- #file2=open(f2,"r")
  result = open(f2, 'a')  # open file handle for write
  for line in f_1:
     new_line=line
