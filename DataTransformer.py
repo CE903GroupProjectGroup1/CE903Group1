@@ -110,7 +110,11 @@ while True:
 
  #Transform csv file to a Json file
  convert.jsonify(file2)
- time.sleep(10)
+ 
 
+ #Interval changed from 10 sec to 1 sec as requested by customer
+ time.sleep(1)
+ #time.sleep(10)
+ 
 
 
